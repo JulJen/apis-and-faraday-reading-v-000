@@ -1,20 +1,31 @@
 class SearchesController < ApplicationController
+  @@client_id = 'BGYBPONDSHZNVM42WWU343RTR1T4TZ2XNQJT52CLEYJL13N5'
+  @@client_secret = '1TIHATF0J0FBVHCBS0PG2QXOCH2N4SH01AVQ30L1PO5YKD4E'
 
   def search
   end
 
   def foursquare
-    #  use Faraday.get(url) to make a request to the API endpoint
-    # passing a block to the get method
-    # adding parameters through the request object via a hash of params
-    Faraday.get 'https://api.foursquare.com/v2/venues/search' do |req|
-      req.params['client_id'] = Y2ZOIHZUWLKQX33KB1KELMOT2HJFL4TCCT1GANUO5MVPOXYR
-      req.params['client_secret'] = D3GDJYURLF0GR0HE4UGXSZUW4OYZRD3CGODNOA5UYCTBZFLC
-      req.params['v'] = '20160201'
-      req.params['near'] = params[:zipcode]
-      req.params['query'] = 'coffee shop'
+    begin
+      @resp = Faraday.get 'https://api.foursquare.com/v2/venues/search' do |req|
+        req.params['client_id'] = @@client_id
+        req.params['client_secret'] = @@client_secret
+        req.params['v'] = '20160201'
+        req.params['near'] = params[:zipcode]
+        req.params['query'] = 'coffee shop'
+        req.options.timeout = 5   # 0 seconds to force timeout error for testing
+      end
+      body_hash = JSON.parse(@resp.body)
+      if @resp.success?
+        @venues = body_hash["response"]["venues"]
+      else
+        @error = body_hash["meta"]["errorDetail"]
+      end
+      
+      rescue Faraday::ConnectionFailed
+        @error = "There was a timeout. Please try again."
     end
     render 'search'
   end
-
+  
 end
