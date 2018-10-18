@@ -21,7 +21,7 @@ class SearchesController < ApplicationController
       else
         @error = body_hash["meta"]["errorDetail"]
       end
-      
+
       rescue Faraday::ConnectionFailed
         @error = "There was a timeout. Please try again."
     end
