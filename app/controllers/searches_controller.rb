@@ -1,8 +1,6 @@
 class SearchesController < ApplicationController
   @@client_id = 'Y2ZOIHZUWLKQX33KB1KELMOT2HJFL4TCCT1GANUO5MVPOXYR'
-  @@client_secret = 'XLZH5EDNHDXQBOYWRIIQ5SOEQ5W5VV2XYWX2YVUSG4AQB1FK
-
-'
+  @@client_secret = 'XLZH5EDNHDXQBOYWRIIQ5SOEQ5W5VV2XYWX2YVUSG4AQB1FK'
 
   def search
   end
@@ -29,5 +27,5 @@ class SearchesController < ApplicationController
     end
     render 'search'
   end
-  
+
 end
